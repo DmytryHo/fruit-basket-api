@@ -1,0 +1,25 @@
+doctrine:
+    dbal:
+        host: '%env(MYSQL_HOST)%'
+        port: '%env(MYSQL_PORT)%'
+        dbname: '%env(MYSQL_DB_NAME)%'
+        user: '%env(MYSQL_USER)%'
+        password: '%env(MYSQL_PASSWORD)%'
+        driver: 'mysqli'
+        server_version: 8
+        logging: true
+        mapping_types:
+            enum: string
+        types:
+            BasketItemTypeEnum:  \App\Infrastructure\Persistence\Doctrine\Type\BasketItemTypeEnum
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Infrastructure/Persistence/Doctrine/Entity'
+                prefix: 'App\Infrastructure\Persistence\Doctrine\Entity'
+                alias: App

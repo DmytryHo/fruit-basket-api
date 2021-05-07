@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  php:
+    build: docker/php
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      XDEBUG_CONFIG: remote_enable=1 remote_autostart=1 remote_port=9003 idekey=PHPSTORM remote_host=10.40.148.253
+      PHP_IDE_CONFIG: serverName=test-task
+      XDEBUG_MODE: 'coverage'
+    ports:
+      - 13340:8080
+    command: /app/bin/rr serve -c .rr.dev.yaml -d
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3310:3306'
+    networks:
+      - app-network
+    volumes:
+      - my-db:/var/lib/mysql2
+
+volumes:
+  my-db:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
