@@ -20,20 +20,25 @@ Create MySQL schema by running command in php-container:
 php bin/console doctrine:migration:migrate
 ```
 
-##Request Examples:
-Create basket:
+## Request Examples:
+<details>
+<summary>Create new basket</summary>
+URI for new Basket will be placed into 'Location' response header
+
 ```sh
 curl --request POST \
   --url http://localhost:13340/baskets \
   --header 'Content-Type: application/json' \
   --data '{
-	"name":"New Basket",
-	"maxCapacity": 12.11
+    "name":"New Basket",
+    "maxCapacity": 12.11
 }'
 ```
+</details>
 
+<details>
+<summary>Update basket</summary>
 
-Update basket:
 ```sh
 curl --request PATCH \
   --url http://localhost:13340/baskets/5 \
@@ -43,20 +48,30 @@ curl --request PATCH \
 	"maxCapacity":13.3
 }'
 ```
+</details>
 
-Get single Basket info:
+<details>
+<summary>Get Basket info</summary>
+
 ```sh
 curl --request GET \
   --url http://localhost:13340/baskets/5 \
   --header 'Content-Type: application/json'
 ```
+</details>
 
-Get all Baskets info:
+<details>
+<summary>Get all Baskets</summary>
+
 ```sh
 curl --request GET \
   --url http://localhost:13340/baskets \
   --header 'Content-Type: application/json'
 ```
+</details>
+
+<details>
+<summary>Add items to Basket</summary>
 
 Delete Basket:
 ```sh
@@ -64,8 +79,11 @@ curl --request DELETE \
   --url http://localhost:13340/baskets/3 \
   --header 'Content-Type: application/json'
 ```
+</details>
 
-Add items to Basket:
+<details>
+<summary>Add items to Basket</summary>
+
 ```sh
 curl --request POST \
   --url http://localhost:13340/baskets/1/items \
@@ -81,10 +99,14 @@ curl --request POST \
 	}
 ]'
 ```
+</details>
 
-Remove All items from Basket:
+<details>
+<summary>Remove All items from Basket</summary>
+
 ```sh
 curl --request DELETE \
   --url http://localhost:13340/baskets/1/items \
   --header 'Content-Type: application/json'
 ```
+</details>
