@@ -9,28 +9,14 @@ on:
       - "develop"
 
 jobs:
-  phpunit-mysql:
-    name: "PHPUnit with MySQL"
+  phpunit:
+    name: "PHPUnit, PHP CS Fixer"
     runs-on: "ubuntu-20.04"
 
     strategy:
       matrix:
         php-version:
           - "8.0"
-        mysql-version:
-          - "8.0"
-
-    services:
-      mysql:
-        image: "mysql:8.0"
-
-        options: >-
-          --health-cmd "mysqladmin ping --silent"
-          -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
-          -e MYSQL_DATABASE=test
-          --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
-        ports:
-          - "3306:3306"
 
     steps:
       - name: "Checkout"
@@ -53,14 +39,11 @@ jobs:
           key: "php-8.0-composer-locked-${{ hashFiles('composer.lock') }}"
           restore-keys: "php-8.0-composer-locked-"
 
-      - name: "Install dependencies with composer"
+      - name: "Install dependencies"
         run: "composer install --no-interaction --no-progress --no-suggest --prefer-dist"
 
       - name: "Run PHPUnit"
         run: "vendor/bin/phpunit"
 
-#      - name: "Run PHPUnit with coverage"
-#        run: "vendor/bin/phpunit -c ci/github/phpunit/phpunit.xml --coverage-clover=coverage.xml"
-
-#      - name: "Upload coverage"
-#        run: "wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover ./coverage.xml"
+      - name: "Run PHP CS Fixer"
+        run: "vendor/bin/php-cs-fixer fix --dry-run --diff"
